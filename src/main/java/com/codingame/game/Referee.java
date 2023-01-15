@@ -32,11 +32,11 @@ public class Referee extends AbstractReferee {
     private static int FIELD_COLOR = 0x888888;
     /** Radius of a not occuped field */
     private static int FIELD_RADIUS = 10;
+    private static int PIECE_RADIUS = 15;
     /** Distance of two fileds */
     private static int FIELD_DIST = 40;
     /** Side lenght of the starting triangles and the central hexagon */
     private static int GROUND_SIZE = 5;
-    private static int NUM_PICES = GROUND_SIZE * (GROUND_SIZE - 1) / 2;
 
     private HashMap<Hex, Circle> circles = new HashMap<>();
 
@@ -44,9 +44,9 @@ public class Referee extends AbstractReferee {
     public void init() {
         for (Player player : gameManager.getActivePlayers()) {
             // add triangles for background of start position
-            final int m = GROUND_SIZE-1;
+            final int m = GROUND_SIZE - 1;
             int id = player.getIndex();
-            Hex one = new Hex(2*m, -m).rotate(id);
+            Hex one = new Hex(2 * m, -m).rotate(id);
             Hex two = new Hex(m, -m).rotate(id);
             Hex three = new Hex(m, 0).rotate(id);
             graphicEntityModule.createPolygon()
@@ -57,7 +57,7 @@ public class Referee extends AbstractReferee {
                     .setAlpha(0.5);
 
             // add second darker triangle for end positions
-            one = new Hex(-2*m, m).rotate(id);
+            one = new Hex(-2 * m, m).rotate(id);
             two = new Hex(-m, m).rotate(id);
             three = new Hex(-m, 0).rotate(id);
             graphicEntityModule.createPolygon()
@@ -92,7 +92,22 @@ public class Referee extends AbstractReferee {
 
         for (Player player : gameManager.getActivePlayers()) {
             // add pieses
-            logger.log(Level.INFO, player.getIndex());
+            int id = player.getIndex();
+            for (int r = GROUND_SIZE-1; r < 2*GROUND_SIZE-1; r++) {
+                for (int q = -GROUND_SIZE+1; q <= GROUND_SIZE-1 - r; q++) {
+                    //skip overlapping corner
+                    if(r==GROUND_SIZE-1 && q == 0){
+                        continue;
+                    }
+                    Hex hex = new Hex(r,q).rotate(id);
+                    Circle circle = graphicEntityModule.createCircle()
+                            .setRadius(PIECE_RADIUS)
+                            .setFillColor(player.getColorToken())
+                            .setX(hex.getX(FIELD_DIST) + WIDTH / 2)
+                            .setY(hex.getY(FIELD_DIST) + HEIGHT / 2);
+                    player.pieces.put(hex, circle);
+                }
+            }
         }
 
         gameManager.endGame();

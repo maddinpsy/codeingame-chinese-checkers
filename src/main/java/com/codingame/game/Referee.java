@@ -3,6 +3,10 @@ package com.codingame.game;
 import java.util.HashMap;
 import java.util.List;
 
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.LogManager;
+
 import com.codingame.gameengine.core.AbstractPlayer.TimeoutException;
 import com.codingame.gameengine.core.AbstractReferee;
 import com.codingame.gameengine.core.MultiplayerGameManager;
@@ -20,6 +24,7 @@ public class Referee extends AbstractReferee {
     private GraphicEntityModule graphicEntityModule;
     @Inject
     private TooltipModule tooltips;
+    private static final Logger logger = LogManager.getLogger(Referee.class);
 
     private static int WIDTH = 1920;
     private static int HEIGHT = 1080;
@@ -83,6 +88,7 @@ public class Referee extends AbstractReferee {
 
         for (Player player : gameManager.getActivePlayers()) {
             // add pieses
+            logger.log(Level.INFO, player.getIndex());
         }
 
         gameManager.endGame();

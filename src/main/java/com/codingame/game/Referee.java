@@ -8,6 +8,7 @@ import com.codingame.gameengine.core.AbstractReferee;
 import com.codingame.gameengine.core.MultiplayerGameManager;
 import com.codingame.gameengine.module.entities.Circle;
 import com.codingame.gameengine.module.entities.GraphicEntityModule;
+import com.codingame.gameengine.module.tooltip.TooltipModule;
 import com.google.inject.Inject;
 
 public class Referee extends AbstractReferee {
@@ -17,6 +18,8 @@ public class Referee extends AbstractReferee {
     private MultiplayerGameManager<Player> gameManager;
     @Inject
     private GraphicEntityModule graphicEntityModule;
+    @Inject
+    private TooltipModule tooltips;
 
     private static int WIDTH = 1920;
     private static int HEIGHT = 1080;
@@ -53,7 +56,7 @@ public class Referee extends AbstractReferee {
                     .addPoint(three.getX(FIELD_DIST) + WIDTH / 2, three.getY(FIELD_DIST) + HEIGHT / 2)
                     .setFillColor(changeColor(player.getColorToken(), 0.5))
                     .setAlpha(0.5);
-          
+
             break;
         }
         int max_coord = GROUND_SIZE * 2;
@@ -72,6 +75,8 @@ public class Referee extends AbstractReferee {
                         .setFillColor(FIELD_COLOR)
                         .setX(hex.getX(FIELD_DIST) + WIDTH / 2)
                         .setY(hex.getY(FIELD_DIST) + HEIGHT / 2);
+                tooltips.setTooltipText(circle, String.format("%d %d %d", hex.q, hex.r, hex.s));
+
                 circles.put(hex, circle);
             }
         }

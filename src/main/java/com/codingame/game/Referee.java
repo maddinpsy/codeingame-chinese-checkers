@@ -40,29 +40,33 @@ public class Referee extends AbstractReferee {
 
     private HashMap<Hex, Circle> circles = new HashMap<>();
 
-    private int changeColor(int c, double amout) {
-        int r = c & 0xFF0000;
-        int g = c & 0x00FF00;
-        int b = c & 0x0000FF;
-
-        return (int) Math.round(r * amout + g * amout + b * amout);
-    }
-
     @Override
     public void init() {
         for (Player player : gameManager.getActivePlayers()) {
-            // add triangles for background
-            Hex one = new Hex(GROUND_SIZE - 1, GROUND_SIZE - 1);
-            Hex two = new Hex(0, GROUND_SIZE - 1);
-            Hex three = new Hex(GROUND_SIZE - 1, 0);
+            // add triangles for background of start position
+            final int m = GROUND_SIZE-1;
+            int id = player.getIndex();
+            Hex one = new Hex(2*m, -m).rotate(id);
+            Hex two = new Hex(m, -m).rotate(id);
+            Hex three = new Hex(m, 0).rotate(id);
             graphicEntityModule.createPolygon()
                     .addPoint(one.getX(FIELD_DIST) + WIDTH / 2, one.getY(FIELD_DIST) + HEIGHT / 2)
                     .addPoint(two.getX(FIELD_DIST) + WIDTH / 2, two.getY(FIELD_DIST) + HEIGHT / 2)
                     .addPoint(three.getX(FIELD_DIST) + WIDTH / 2, three.getY(FIELD_DIST) + HEIGHT / 2)
-                    .setFillColor(changeColor(player.getColorToken(), 0.5))
+                    .setFillColor(player.getColorToken())
                     .setAlpha(0.5);
 
-            break;
+            // add second darker triangle for end positions
+            one = new Hex(-2*m, m).rotate(id);
+            two = new Hex(-m, m).rotate(id);
+            three = new Hex(-m, 0).rotate(id);
+            graphicEntityModule.createPolygon()
+                    .addPoint(one.getX(FIELD_DIST) + WIDTH / 2, one.getY(FIELD_DIST) + HEIGHT / 2)
+                    .addPoint(two.getX(FIELD_DIST) + WIDTH / 2, two.getY(FIELD_DIST) + HEIGHT / 2)
+                    .addPoint(three.getX(FIELD_DIST) + WIDTH / 2, three.getY(FIELD_DIST) + HEIGHT / 2)
+                    .setFillColor(player.getColorToken())
+                    .setAlpha(0.5);
+
         }
         int max_coord = GROUND_SIZE * 2;
         for (int q = -max_coord; q <= max_coord; q++) {

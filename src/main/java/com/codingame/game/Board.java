@@ -66,7 +66,7 @@ public class Board {
 
     public boolean isFree(Hex hex) {
         for (Piece p : pieces) {
-            if (p.pos == hex) {
+            if (p.pos.equals(hex)) {
                 return false;
             }
         }
@@ -90,7 +90,7 @@ public class Board {
 
         while (!openList.isEmpty()) {
             final Node<Hex> current = openList.pop();
-            if (current.data == end) {
+            if (current.data.equals(end)) {
                 // reconstruct path, when end is found
                 LinkedList<Hex> path = new LinkedList<>();
                 Node<Hex> work = current;
@@ -130,7 +130,7 @@ public class Board {
         return true;
     }
 
-    public List<Hex> checkMove(int playerId, Move move) throws IllegalArgumentException {
+    public void checkMove(int playerId, Move move) throws IllegalArgumentException {
         // check are on map
         if (!isOnMap(move.start)) {
             throw new IllegalArgumentException("Start is not on map");
@@ -139,25 +139,37 @@ public class Board {
             throw new IllegalArgumentException("End is not on map");
         }
         // check moving own piece
-        if (!pieces.parallelStream().anyMatch(p -> p.pos == move.start && p.playerID == playerId)) {
+        if (!pieces.parallelStream().anyMatch(p -> p.pos.equals(move.start) && p.playerID == playerId)) {
             throw new IllegalArgumentException("You can only move your own pieces");
         }
         // check end is empty
         if (!isFree(move.end)) {
             throw new IllegalArgumentException("End must be empty");
         }
+    }
+
+    public List<Hex> makeMove(int playerId, Move move) throws IllegalArgumentException {
+        List<Hex> route;
+        checkMove(playerId, move);
         // check is direct move
         if (move.start.getNeighbours().contains(move.end)) {
-            List<Hex> route = new ArrayList<>(2);
+            route = new ArrayList<>(2);
             route.add(move.start);
             route.add(move.end);
-            return route;
+        } else {
+            // check jump route exists
+            route = getRoute(move.start, move.end);
+            if (route.size() == 0) {
+                throw new IllegalArgumentException("Thre is no jump route from start to end.");
+            }
         }
-        // check route exists
-        List<Hex> jumpRoute = getRoute(move.start, move.end);
-        if (jumpRoute.size() == 0) {
-            throw new IllegalArgumentException("Thre is no jump route from start to end.");
-        }
-        return jumpRoute;
+        // update piece list
+        Piece movingPiece = pieces.parallelStream()
+                .filter(p -> p.pos.equals(move.start))
+                .findAny()
+                .orElseThrow(() -> new RuntimeException("move check was incomplete"));
+        movingPiece.pos = move.end;
+        return route;
     }
+
 }

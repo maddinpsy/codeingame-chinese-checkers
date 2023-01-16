@@ -1,6 +1,7 @@
 package com.codingame.game;
 
 import java.util.HashMap;
+import java.util.List;
 
 import com.codingame.gameengine.module.entities.Circle;
 import com.codingame.gameengine.module.entities.GraphicEntityModule;
@@ -23,7 +24,7 @@ public class BasicUI extends AbstractUI {
     /** Distance of two fileds */
     private static int FIELD_DIST = 40;
 
-    private HashMap<Piece, Circle> pieces = new HashMap<>();
+    private HashMap<Hex, Circle> pieces = new HashMap<>();
     private Board board;
 
     public void initBackground() {
@@ -38,7 +39,7 @@ public class BasicUI extends AbstractUI {
                     .addPoint(one.getX(FIELD_DIST) + WIDTH / 2, one.getY(FIELD_DIST) + HEIGHT / 2)
                     .addPoint(two.getX(FIELD_DIST) + WIDTH / 2, two.getY(FIELD_DIST) + HEIGHT / 2)
                     .addPoint(three.getX(FIELD_DIST) + WIDTH / 2, three.getY(FIELD_DIST) + HEIGHT / 2)
-                     .setFillColor(PLAYER_COLORS[id])
+                    .setFillColor(PLAYER_COLORS[id])
                     .setAlpha(0.5);
 
             // add second darker triangle for end positions
@@ -72,7 +73,7 @@ public class BasicUI extends AbstractUI {
                     .setFillColor(PLAYER_COLORS[piece.playerID])
                     .setX(piece.pos.getX(FIELD_DIST) + WIDTH / 2)
                     .setY(piece.pos.getY(FIELD_DIST) + HEIGHT / 2);
-            pieces.put(piece, circle);
+            pieces.put(piece.pos, circle);
         });
     }
 
@@ -85,8 +86,14 @@ public class BasicUI extends AbstractUI {
     }
 
     @Override
-    public void update(Move m) {
-        // TODO Auto-generated method stub
-
+    public void update(List<Hex> hops) {
+        Circle movongEntity = pieces.remove(hops.get(0));
+        if (movongEntity == null) {
+            throw new RuntimeException("Board and UI are out of sync!");
+        }
+        Hex end = hops.get(hops.size() - 1);
+        movongEntity.setX(end.getX(FIELD_DIST) + WIDTH / 2);
+        movongEntity.setY(end.getY(FIELD_DIST) + HEIGHT / 2);
+        pieces.put(end, movongEntity);
     }
 }

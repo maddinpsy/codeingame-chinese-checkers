@@ -29,7 +29,6 @@ public class Referee extends AbstractReferee {
     public void init() {
         board.init(GROUND_SIZE, gameManager.getPlayerCount());
         ui.init(board);
-        gameManager.endGame();
     }
 
     public Move parseMove(String in) {
@@ -58,9 +57,11 @@ public class Referee extends AbstractReferee {
     @Override
     public void gameTurn(int turn) {
         // select current player based on turn
-        Player player = gameManager.getActivePlayers().get(turn % gameManager.getPlayerCount());
+        Player player = gameManager.getActivePlayers().get(turn % gameManager.getActivePlayers().size());
         // send all pieces of all players to current player
-        for (Piece p : board.getAllPieces()) {
+        List<Piece> allPieces = board.getAllPieces();
+        player.sendInputLine(String.format("%d", allPieces.size()));
+        for (Piece p : allPieces) {
             player.sendInputLine(String.format("%d %d %d %d", p.playerID, p.pos.q, p.pos.r, p.pos.s));
         }
         player.execute();
@@ -69,14 +70,22 @@ public class Referee extends AbstractReferee {
             List<String> outputs = player.getOutputs();
             // Check validity of the player output
             Move m = parseMove(outputs.get(0));
-            board.checkMove(player.getIndex(), m);
+            List<Hex> hops = board.makeMove(player.getIndex(), m);
             // and compute the new game state
-            ui.update(m);
+            ui.update(hops);
 
         } catch (TimeoutException e) {
-            player.deactivate(String.format("$%d timeout!", player.getIndex()));
+            String msg = String.format("$%d timeout!", player.getIndex());
+            logger.info(msg);
+            player.deactivate(msg);
         } catch (IllegalArgumentException e) {
-            player.deactivate(String.format("$%d invalid move!", player.getIndex()));
+            String msg = String.format("$%d invalid move!", player.getIndex());
+            logger.info(msg);
+            player.deactivate(msg);
+        }
+
+        if (gameManager.getActivePlayers().size() == 0) {
+            gameManager.endGame();
         }
     }
 }

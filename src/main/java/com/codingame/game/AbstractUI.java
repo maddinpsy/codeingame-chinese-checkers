@@ -1,5 +1,7 @@
 package com.codingame.game;
 
+import java.util.List;
+
 public abstract class AbstractUI {
 
     public static final int[] PLAYER_COLORS = {
@@ -15,6 +17,6 @@ public abstract class AbstractUI {
 
     public abstract void init(Board b);
 
-    public abstract void update(Move m);
+    public abstract void update(List<Hex> hops);
 
 }

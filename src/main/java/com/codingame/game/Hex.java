@@ -58,4 +58,33 @@ public class Hex {
         double r = (2 / 3 * y) / size;
         return new Hex((int) Math.round(q), (int) Math.round(r));
     }
+
+    
+    @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + q;
+        result = prime * result + r;
+        result = prime * result + s;
+        return result;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+        if (obj == null)
+            return false;
+        if (getClass() != obj.getClass())
+            return false;
+        Hex other = (Hex) obj;
+        if (q != other.q)
+            return false;
+        if (r != other.r)
+            return false;
+        if (s != other.s)
+            return false;
+        return true;
+    }
 }

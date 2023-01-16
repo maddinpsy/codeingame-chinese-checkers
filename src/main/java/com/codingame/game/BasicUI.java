@@ -23,18 +23,8 @@ public class BasicUI extends AbstractUI {
     /** Distance of two fileds */
     private static int FIELD_DIST = 40;
 
-    private HashMap<Hex, Circle> pieces = new HashMap<>();
+    private HashMap<Piece, Circle> pieces = new HashMap<>();
     private Board board;
-
-    private class Piece {
-        Hex pos;
-        int playerID;
-
-        public Piece(Hex pos, int playerID) {
-            this.pos = pos;
-            this.playerID = playerID;
-        }
-    }
 
     public void initBackground() {
         // add triangles
@@ -76,24 +66,14 @@ public class BasicUI extends AbstractUI {
 
     public void initPlayers() {
         // add pieses
-        final int m = board.getSize() - 1;
-        for (int id = 0; id < board.getNumPlayers(); id++) {
-            for (int r = m; r <= 2 * m; r++) {
-                for (int q = -m; q <= m - r; q++) {
-                    // skip overlapping corner
-                    if (r == m && q == 0) {
-                        continue;
-                    }
-                    Hex hex = new Hex(r, q).rotate(id);
-                    Circle circle = graphicEntityModule.createCircle()
-                            .setRadius(PIECE_RADIUS)
-                            // .setFillColor(player.getColorToken())
-                            .setX(hex.getX(FIELD_DIST) + WIDTH / 2)
-                            .setY(hex.getY(FIELD_DIST) + HEIGHT / 2);
-                    pieces.put(hex, circle);
-                }
-            }
-        }
+        board.getAllPieces().forEach(piece -> {
+            Circle circle = graphicEntityModule.createCircle()
+                    .setRadius(PIECE_RADIUS)
+                    // .setFillColor(player.getColorToken())
+                    .setX(piece.pos.getX(FIELD_DIST) + WIDTH / 2)
+                    .setY(piece.pos.getY(FIELD_DIST) + HEIGHT / 2);
+            pieces.put(piece, circle);
+        });
     }
 
     @Override

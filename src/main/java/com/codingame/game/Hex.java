@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Hex {
-    int q, r, s;
+    public int q, r, s;
 
     public Hex(int q, int r) {
         this.q = q;
@@ -60,6 +60,11 @@ public class Hex {
     }
 
     
+    @Override
+    public String toString() {
+        return "Hex [q=" + q + ", r=" + r + ", s=" + s + "]";
+    }
+
     @Override
     public int hashCode() {
         final int prime = 31;

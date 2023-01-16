@@ -96,8 +96,8 @@ public class Board {
                 // reconstruct path, when end is found
                 LinkedList<Hex> path = new LinkedList<>();
                 Node<Hex> work = current;
-                while (work.parent != null) {
-                    path.addFirst(current.data);
+                while (work != null) {
+                    path.addFirst(work.data);
                     work = work.parent;
                 }
                 return path;

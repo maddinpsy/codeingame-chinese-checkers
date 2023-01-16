@@ -7,12 +7,18 @@ import java.util.List;
 public class Board {
     private int size;
     private int numPlayers;
-    private ArrayList<Piece> pieces;
+    private List<Piece> pieces;
 
     public void init(int size, int numPlayers) {
         this.size = size;
         this.numPlayers = numPlayers;
         initPices();
+    }
+
+    public void init(int size, int numPlayers, List<Piece> pieces) {
+        this.size = size;
+        this.numPlayers = numPlayers;
+        this.pieces = pieces;
     }
 
     private void initPices() {
@@ -21,11 +27,7 @@ public class Board {
         for (int id = 0; id < getNumPlayers(); id++) {
             for (int r = m; r <= 2 * m; r++) {
                 for (int q = -m; q <= m - r; q++) {
-                    // skip overlapping corner
-                    if (r == m && q == 0) {
-                        continue;
-                    }
-                    Hex hex = new Hex(r, q).rotate(id);
+                    Hex hex = new Hex(r, q).rotate(id*2);
                     pieces.add(new Piece(hex, id));
                 }
             }

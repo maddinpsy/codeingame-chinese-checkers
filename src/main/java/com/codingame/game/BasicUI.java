@@ -32,9 +32,9 @@ public class BasicUI extends AbstractUI {
         // add triangles for background of start position
         final int m = board.getSize() - 1;
         for (int id = 0; id < board.getNumPlayers(); id++) {
-            Hex one = new Hex(2 * m, -m).rotate(id);
-            Hex two = new Hex(m, -m).rotate(id);
-            Hex three = new Hex(m, 0).rotate(id);
+            Hex one = new Hex(2 * m, -m).rotate(id*2);
+            Hex two = new Hex(m, -m).rotate(id*2);
+            Hex three = new Hex(m, 0).rotate(id*2);
             graphicEntityModule.createPolygon()
                     .addPoint(one.getX(FIELD_DIST) + WIDTH / 2, one.getY(FIELD_DIST) + HEIGHT / 2)
                     .addPoint(two.getX(FIELD_DIST) + WIDTH / 2, two.getY(FIELD_DIST) + HEIGHT / 2)
@@ -43,9 +43,9 @@ public class BasicUI extends AbstractUI {
                     .setAlpha(0.5);
 
             // add second darker triangle for end positions
-            one = new Hex(-2 * m, m).rotate(id);
-            two = new Hex(-m, m).rotate(id);
-            three = new Hex(-m, 0).rotate(id);
+            one = new Hex(-2 * m, m).rotate(id*2);
+            two = new Hex(-m, m).rotate(id*2);
+            three = new Hex(-m, 0).rotate(id*2);
             graphicEntityModule.createPolygon()
                     .addPoint(one.getX(FIELD_DIST) + WIDTH / 2, one.getY(FIELD_DIST) + HEIGHT / 2)
                     .addPoint(two.getX(FIELD_DIST) + WIDTH / 2, two.getY(FIELD_DIST) + HEIGHT / 2)

@@ -38,7 +38,7 @@ public class BasicUI extends AbstractUI {
                     .addPoint(one.getX(FIELD_DIST) + WIDTH / 2, one.getY(FIELD_DIST) + HEIGHT / 2)
                     .addPoint(two.getX(FIELD_DIST) + WIDTH / 2, two.getY(FIELD_DIST) + HEIGHT / 2)
                     .addPoint(three.getX(FIELD_DIST) + WIDTH / 2, three.getY(FIELD_DIST) + HEIGHT / 2)
-                    // .setFillColor(player.getColorToken())
+                     .setFillColor(PLAYER_COLORS[id])
                     .setAlpha(0.5);
 
             // add second darker triangle for end positions
@@ -49,7 +49,7 @@ public class BasicUI extends AbstractUI {
                     .addPoint(one.getX(FIELD_DIST) + WIDTH / 2, one.getY(FIELD_DIST) + HEIGHT / 2)
                     .addPoint(two.getX(FIELD_DIST) + WIDTH / 2, two.getY(FIELD_DIST) + HEIGHT / 2)
                     .addPoint(three.getX(FIELD_DIST) + WIDTH / 2, three.getY(FIELD_DIST) + HEIGHT / 2)
-                    // .setFillColor(player.getColorToken())
+                    .setFillColor(PLAYER_COLORS[id])
                     .setAlpha(0.5);
         }
 
@@ -69,7 +69,7 @@ public class BasicUI extends AbstractUI {
         board.getAllPieces().forEach(piece -> {
             Circle circle = graphicEntityModule.createCircle()
                     .setRadius(PIECE_RADIUS)
-                    // .setFillColor(player.getColorToken())
+                    .setFillColor(PLAYER_COLORS[piece.playerID])
                     .setX(piece.pos.getX(FIELD_DIST) + WIDTH / 2)
                     .setY(piece.pos.getY(FIELD_DIST) + HEIGHT / 2);
             pieces.put(piece, circle);

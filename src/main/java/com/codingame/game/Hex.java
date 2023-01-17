@@ -29,6 +29,8 @@ public class Hex {
 
     /** returns the clock wise rotated hex by sixths of the circle */
     public Hex rotate(int sixth) {
+        while (sixth < 0)
+            sixth += 6;
         int[] new_q = { q, r, s };
         int[] new_r = { r, s, q };
         int sign = sixth % 2 == 0 ? 1 : -1;
@@ -59,7 +61,6 @@ public class Hex {
         return new Hex((int) Math.round(q), (int) Math.round(r));
     }
 
-    
     @Override
     public String toString() {
         return "Hex [q=" + q + ", r=" + r + ", s=" + s + "]";

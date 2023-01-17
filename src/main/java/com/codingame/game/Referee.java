@@ -29,6 +29,8 @@ public class Referee extends AbstractReferee {
     public void init() {
         board.init(GROUND_SIZE, gameManager.getPlayerCount());
         ui.init(board);
+        // 200 moves, each 150ms => max game length: 30 sec
+        gameManager.setTurnMaxTime(150);
     }
 
     public Move parseMove(String in) {
@@ -56,13 +58,19 @@ public class Referee extends AbstractReferee {
 
     @Override
     public void gameTurn(int turn) {
-        // select current player based on turn
-        Player player = gameManager.getActivePlayers().get(turn % gameManager.getActivePlayers().size());
+        // start with player 0, than round robin based on turn
+        Player player = gameManager.getActivePlayers().get((turn - 1) % gameManager.getActivePlayers().size());
         // send all pieces of all players to current player
         List<Piece> allPieces = board.getAllPieces();
         player.sendInputLine(String.format("%d", allPieces.size()));
         for (Piece p : allPieces) {
-            player.sendInputLine(String.format("%d %d %d %d", p.playerID, p.pos.q, p.pos.r, p.pos.s));
+            // correct playerId, so that the AI always has id 0
+            int correctedId = (p.playerID - player.getIndex() + gameManager.getPlayerCount())
+            % gameManager.getPlayerCount();
+            // correct piece position, so that the AI always plays from bottom to top.
+            Hex correctedPos = p.pos.rotate(-player.getIndex() * 2);
+            player.sendInputLine(
+                    String.format("%d %d %d %d", correctedId, correctedPos.q, correctedPos.r, correctedPos.s));
         }
         player.execute();
 
@@ -70,7 +78,9 @@ public class Referee extends AbstractReferee {
             List<String> outputs = player.getOutputs();
             // Check validity of the player output
             Move m = parseMove(outputs.get(0));
-            List<Hex> hops = board.makeMove(player.getIndex(), m);
+            // correct AI move back to global board coordinates 
+            Move correctedMove = new Move(m.start.rotate(player.getIndex() * 2), m.end.rotate(player.getIndex() * 2));
+            List<Hex> hops = board.makeMove(player.getIndex(), correctedMove);
             // and compute the new game state
             ui.update(hops);
 
@@ -79,12 +89,12 @@ public class Referee extends AbstractReferee {
             logger.info(msg);
             player.deactivate(msg);
         } catch (IllegalArgumentException e) {
-            String msg = String.format("$%d invalid move!", player.getIndex());
+            String msg = String.format("$%d invalid move: %s", player.getIndex(), e.getMessage());
             logger.info(msg);
             player.deactivate(msg);
         }
 
-        if (gameManager.getActivePlayers().size() == 0) {
+        if (gameManager.getActivePlayers().size() <= 1) {
             gameManager.endGame();
         }
     }

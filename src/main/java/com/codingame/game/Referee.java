@@ -1,12 +1,16 @@
 package com.codingame.game;
 
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import com.codingame.gameengine.core.AbstractPlayer.TimeoutException;
 import com.codingame.gameengine.core.AbstractReferee;
+import com.codingame.gameengine.core.GameManager;
 import com.codingame.gameengine.core.MultiplayerGameManager;
 import com.google.inject.Inject;
 
@@ -18,7 +22,7 @@ public class Referee extends AbstractReferee {
     private static final Logger logger = LogManager.getLogger(Referee.class);
 
     /** Side lenght of the starting triangles and the central hexagon */
-    private static int GROUND_SIZE = 5;
+    private static int GROUND_SIZE = 4;
 
     @Inject
     private Board board;
@@ -30,7 +34,8 @@ public class Referee extends AbstractReferee {
         board.init(GROUND_SIZE, gameManager.getPlayerCount());
         ui.init(board);
         // 200 moves, each 150ms => max game length: 30 sec
-        gameManager.setTurnMaxTime(150);
+        gameManager.setTurnMaxTime(200);
+        gameManager.setMaxTurns(150);
     }
 
     public Move parseMove(String in) {
@@ -66,7 +71,7 @@ public class Referee extends AbstractReferee {
         for (Piece p : allPieces) {
             // correct playerId, so that the AI always has id 0
             int correctedId = (p.playerID - player.getIndex() + gameManager.getPlayerCount())
-            % gameManager.getPlayerCount();
+                    % gameManager.getPlayerCount();
             // correct piece position, so that the AI always plays from bottom to top.
             Hex correctedPos = p.pos.rotate(-player.getIndex() * 2);
             player.sendInputLine(
@@ -78,12 +83,12 @@ public class Referee extends AbstractReferee {
             List<String> outputs = player.getOutputs();
             // Check validity of the player output
             Move m = parseMove(outputs.get(0));
-            // correct AI move back to global board coordinates 
+            // correct AI move back to global board coordinates
             Move correctedMove = new Move(m.start.rotate(player.getIndex() * 2), m.end.rotate(player.getIndex() * 2));
             List<Hex> hops = board.makeMove(player.getIndex(), correctedMove);
             // and compute the new game state
             ui.update(hops);
-            gameManager.setFrameDuration(hops.size()*500);
+            gameManager.setFrameDuration(hops.size() * 500);
 
         } catch (TimeoutException e) {
             String msg = String.format("$%d timeout!", player.getIndex());
@@ -95,8 +100,50 @@ public class Referee extends AbstractReferee {
             player.deactivate(msg);
         }
 
+        // check winner
+        Set<Hex> currentPos = board.getAllPieces().stream()
+                .filter(p -> p.playerID == player.getIndex())
+                .map(p -> p.pos)
+                .collect(Collectors.toSet());
+        Set<Hex> winningPos = board.getStartFields(3+player.getIndex() * 2);
+        if (currentPos.containsAll(winningPos)) {
+            player.deactivate(player.getNicknameToken() + " finished!");
+        }
+        
+
+        // check end game
         if (gameManager.getActivePlayers().size() <= 1) {
             gameManager.endGame();
+        }
+
+    }
+
+    @Override
+    public void onEnd() {
+        List<Player> winner = new LinkedList<>();
+        long minScore = Integer.MAX_VALUE;
+        for (Player player : gameManager.getPlayers()) {
+            final Hex goal = new Hex(-8, 4).rotate(player.getIndex() * 2);
+            long score = board.getAllPieces().stream()
+                    .filter(p -> p.playerID == player.getIndex())
+                    .collect(Collectors.summarizingInt(p -> p.pos.distance(goal))).getSum();
+            player.setScore((int) score);
+            gameManager.addToGameSummary(player.getNicknameToken() + " Score: " + score);
+
+            if (score < minScore) {
+                minScore = score;
+                winner.clear();
+                winner.add(player);
+            } else if (score == minScore) {
+                winner.add(player);
+            }
+        }
+        if (winner.size() == 1) {
+            gameManager.addToGameSummary(GameManager.formatSuccessMessage(winner.get(0).getNicknameToken() + " won!"));
+        } else {
+            String allwinners = String.join(", ",
+                    winner.stream().map(w -> w.getNicknameToken()).collect(Collectors.toList()));
+            gameManager.addToGameSummary(GameManager.formatSuccessMessage(allwinners + " won!"));
         }
     }
 }

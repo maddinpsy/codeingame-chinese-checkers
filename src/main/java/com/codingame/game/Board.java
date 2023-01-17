@@ -1,8 +1,10 @@
 package com.codingame.game;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Set;
 
 public class Board {
     private int size;
@@ -23,15 +25,25 @@ public class Board {
 
     private void initPices() {
         pieces = new ArrayList<>((size * (size - 1)) / 2 * numPlayers);
-        final int m = getSize() - 1;
+
         for (int id = 0; id < getNumPlayers(); id++) {
-            for (int r = m; r <= 2 * m; r++) {
-                for (int q = -m; q <= m - r; q++) {
-                    Hex hex = new Hex(r, q).rotate(id*2);
-                    pieces.add(new Piece(hex, id));
-                }
+            final int fid = id;
+            getStartFields(id * 2).forEach(
+                    hex -> pieces.add(new Piece(hex, fid)));
+        }
+
+    }
+
+    public Set<Hex> getStartFields(int sixth) {
+        HashSet<Hex> startFields = new HashSet<>((size * (size - 1)) / 2);
+        final int m = getSize() - 1;
+        for (int r = m; r <= 2 * m; r++) {
+            for (int q = -m; q <= m - r; q++) {
+                Hex hex = new Hex(r, q).rotate(sixth);
+                startFields.add(hex);
             }
         }
+        return startFields;
     }
 
     public int getNumPlayers() {

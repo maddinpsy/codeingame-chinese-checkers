@@ -55,6 +55,10 @@ public class Hex {
         return new Hex(q - dq, r - dr);
     }
 
+    public int distance(Hex b) {
+        return (Math.abs(this.q - b.q) + Math.abs(this.r - b.r) + Math.abs(this.s - b.s)) / 2;
+    }
+
     public static Hex fromPoint(int x, int y, int size) {
         double q = (Math.sqrt(3) / 3 * x - 1 / 3 * y) / size;
         double r = (2 / 3 * y) / size;

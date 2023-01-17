@@ -32,9 +32,9 @@ public class BasicUI extends AbstractUI {
         // add triangles for background of start position
         final int m = board.getSize() - 1;
         for (int id = 0; id < board.getNumPlayers(); id++) {
-            Hex one = new Hex(2 * m, -m).rotate(id*2);
-            Hex two = new Hex(m, -m).rotate(id*2);
-            Hex three = new Hex(m, 0).rotate(id*2);
+            Hex one = new Hex(2 * m, -m).rotate(id * 2);
+            Hex two = new Hex(m, -m).rotate(id * 2);
+            Hex three = new Hex(m, 0).rotate(id * 2);
             graphicEntityModule.createPolygon()
                     .addPoint(one.getX(FIELD_DIST) + WIDTH / 2, one.getY(FIELD_DIST) + HEIGHT / 2)
                     .addPoint(two.getX(FIELD_DIST) + WIDTH / 2, two.getY(FIELD_DIST) + HEIGHT / 2)
@@ -43,9 +43,9 @@ public class BasicUI extends AbstractUI {
                     .setAlpha(0.5);
 
             // add second darker triangle for end positions
-            one = new Hex(-2 * m, m).rotate(id*2);
-            two = new Hex(-m, m).rotate(id*2);
-            three = new Hex(-m, 0).rotate(id*2);
+            one = new Hex(-2 * m, m).rotate(id * 2);
+            two = new Hex(-m, m).rotate(id * 2);
+            three = new Hex(-m, 0).rotate(id * 2);
             graphicEntityModule.createPolygon()
                     .addPoint(one.getX(FIELD_DIST) + WIDTH / 2, one.getY(FIELD_DIST) + HEIGHT / 2)
                     .addPoint(two.getX(FIELD_DIST) + WIDTH / 2, two.getY(FIELD_DIST) + HEIGHT / 2)
@@ -71,6 +71,8 @@ public class BasicUI extends AbstractUI {
             Circle circle = graphicEntityModule.createCircle()
                     .setRadius(PIECE_RADIUS)
                     .setFillColor(PLAYER_COLORS[piece.playerID])
+                    .setLineColor(0x000000)
+                    .setLineWidth(1)
                     .setX(piece.pos.getX(FIELD_DIST) + WIDTH / 2)
                     .setY(piece.pos.getY(FIELD_DIST) + HEIGHT / 2);
             pieces.put(piece.pos, circle);
@@ -87,13 +89,43 @@ public class BasicUI extends AbstractUI {
 
     @Override
     public void update(List<Hex> hops) {
+        // get entity at start position
         Circle movongEntity = pieces.remove(hops.get(0));
         if (movongEntity == null) {
             throw new RuntimeException("Board and UI are out of sync!");
         }
-        Hex end = hops.get(hops.size() - 1);
-        movongEntity.setX(end.getX(FIELD_DIST) + WIDTH / 2);
-        movongEntity.setY(end.getY(FIELD_DIST) + HEIGHT / 2);
-        pieces.put(end, movongEntity);
+        boolean slideingMove = hops.size() == 2 && hops.get(0).getNeighbours().contains(hops.get(1));
+        if (slideingMove) {
+            movongEntity.setX(hops.get(1).getX(FIELD_DIST) + WIDTH / 2);
+            movongEntity.setY(hops.get(1).getY(FIELD_DIST) + HEIGHT / 2);
+        } else {
+            // move from hop to hop
+            int lastx = movongEntity.getX();
+            int lasty = movongEntity.getY();
+            double nominator = (double) (hops.size()-1) * 2.0;
+            for (int idx = 1; idx < hops.size(); idx++) {
+                Hex hop = hops.get(idx);
+                // get position at end of hop
+                int newx = hop.getX(FIELD_DIST) + WIDTH / 2;
+                int newy = hop.getY(FIELD_DIST) + HEIGHT / 2;
+                // make a step in the middle
+                movongEntity.setZIndex(2);
+                movongEntity.setX((newx + lastx) / 2);
+                movongEntity.setY((newy + lasty) / 2);
+                movongEntity.setScale(0.5);
+                graphicEntityModule.commitEntityState((idx * 2 - 1) / nominator, movongEntity);
+                // make a step at the endof hop
+                movongEntity.setX(newx);
+                movongEntity.setY(newy);
+                movongEntity.setScale(1);
+                graphicEntityModule.commitEntityState((idx * 2) / nominator, movongEntity);
+                // store current x,y for next move
+                lastx = newx;
+                lasty = newy;
+            }
+        }
+        // save entity at right pos for next move
+        movongEntity.setZIndex(1);
+        pieces.put(hops.get(hops.size() - 1), movongEntity);
     }
 }

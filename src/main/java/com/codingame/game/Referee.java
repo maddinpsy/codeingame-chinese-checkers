@@ -83,6 +83,7 @@ public class Referee extends AbstractReferee {
             List<Hex> hops = board.makeMove(player.getIndex(), correctedMove);
             // and compute the new game state
             ui.update(hops);
+            gameManager.setFrameDuration(hops.size()*500);
 
         } catch (TimeoutException e) {
             String msg = String.format("$%d timeout!", player.getIndex());

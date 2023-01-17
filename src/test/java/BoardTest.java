@@ -95,13 +95,19 @@ public class BoardTest {
     @Test
     void testIsOnMap_faraway() {
         board.init(5, 3);
-        assertFalse(board.isFree(new Hex(8, 8)));
+        assertFalse(board.isOnMap(new Hex(8, 8)));
     }
 
     @Test
     void testIsOnMap_betweenStart() {
         board.init(5, 3);
-        assertFalse(board.isFree(new Hex(5, 0)));
+        assertFalse(board.isOnMap(new Hex(5, 0)));
+    }
+
+    @Test
+    void testIsOnMap_betweenStart2() {
+        board.init(5, 3);
+        assertFalse(board.isOnMap(new Hex(6, -5)));
     }
 
     @Test

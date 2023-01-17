@@ -105,7 +105,7 @@ public class Board {
 
             // add all free jump positions to the open set
             current.data.getNeighbours()
-                    .parallelStream()
+                    .stream()
                     .filter(n -> !isFree(n))
                     .map(n -> n.getOpposite(current.data))
                     .filter(this::isFree)

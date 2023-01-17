@@ -1,7 +1,7 @@
 package com.codingame.game;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 public class Hex {
     public int q, r, s;
@@ -37,8 +37,8 @@ public class Hex {
         return new Hex(sign * new_q[sixth % 3], sign * new_r[sixth % 3]);
     }
 
-    public List<Hex> getNeighbours() {
-        ArrayList<Hex> neighbors = new ArrayList<>(6);
+    public Set<Hex> getNeighbours() {
+        Set<Hex> neighbors = new HashSet<>();
         neighbors.add(new Hex(q - 1, r));
         neighbors.add(new Hex(q + 1, r));
         neighbors.add(new Hex(q, r - 1));

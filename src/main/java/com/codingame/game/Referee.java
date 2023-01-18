@@ -98,27 +98,27 @@ public class Referee extends AbstractReferee {
             ui.update(hops);
             gameManager.setFrameDuration(hops.size() * 500);
 
+            // check winner
+            Set<Hex> currentPos = board.getAllPieces().stream()
+                    .filter(p -> p.playerID == player.getIndex())
+                    .map(p -> p.pos)
+                    .collect(Collectors.toSet());
+            Set<Hex> winningPos = board.getStartFields(3 + player.getIndex() * 2);
+            player.setScore(50 - actualTurn - getScore(currentPos, player.getIndex()));
+            if (currentPos.containsAll(winningPos)) {
+                player.deactivate(player.getNicknameToken() + " finished!");
+            }
+
         } catch (TimeoutException e) {
             String msg = String.format("$%d timeout!", player.getIndex());
             logger.info(msg);
-            player.setScore(player.getScore()-1000);
+            player.setScore(player.getScore() - 1000);
             player.deactivate(msg);
         } catch (IllegalArgumentException e) {
             String msg = String.format("$%d invalid move: %s", player.getIndex(), e.getMessage());
             logger.info(msg);
-            player.setScore(player.getScore()-1000);
+            player.setScore(player.getScore() - 1000);
             player.deactivate(msg);
-        }
-
-        // check winner
-        Set<Hex> currentPos = board.getAllPieces().stream()
-                .filter(p -> p.playerID == player.getIndex())
-                .map(p -> p.pos)
-                .collect(Collectors.toSet());
-        Set<Hex> winningPos = board.getStartFields(3 + player.getIndex() * 2);
-        player.setScore(50-actualTurn + 1000 - getScore(currentPos, player.getIndex()));
-        if (currentPos.containsAll(winningPos)) {
-            player.deactivate(player.getNicknameToken() + " finished!");
         }
 
         // check end game

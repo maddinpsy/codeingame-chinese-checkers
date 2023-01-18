@@ -1,5 +1,7 @@
 package com.codingame.game;
 
+import java.util.Collections;
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
@@ -23,6 +25,8 @@ public class Referee extends AbstractReferee {
 
     /** Side lenght of the starting triangles and the central hexagon */
     private static int GROUND_SIZE = 4;
+    int actualTurn = 0;
+    List<Player> nextPlayer = Collections.emptyList();
 
     @Inject
     private Board board;
@@ -63,8 +67,12 @@ public class Referee extends AbstractReferee {
 
     @Override
     public void gameTurn(int turn) {
-        // start with player 0, than round robin based on turn
-        Player player = gameManager.getActivePlayers().get((turn - 1) % gameManager.getActivePlayers().size());
+        // start with player 0, than round robin
+        if (nextPlayer.isEmpty()) {
+            nextPlayer = gameManager.getActivePlayers();
+            actualTurn += 1;
+        }
+        Player player = nextPlayer.remove(0);
         // send all pieces of all players to current player
         List<Piece> allPieces = board.getAllPieces();
         player.sendInputLine(String.format("%d", allPieces.size()));
@@ -93,10 +101,12 @@ public class Referee extends AbstractReferee {
         } catch (TimeoutException e) {
             String msg = String.format("$%d timeout!", player.getIndex());
             logger.info(msg);
+            player.setScore(player.getScore()-1000);
             player.deactivate(msg);
         } catch (IllegalArgumentException e) {
             String msg = String.format("$%d invalid move: %s", player.getIndex(), e.getMessage());
             logger.info(msg);
+            player.setScore(player.getScore()-1000);
             player.deactivate(msg);
         }
 
@@ -105,36 +115,55 @@ public class Referee extends AbstractReferee {
                 .filter(p -> p.playerID == player.getIndex())
                 .map(p -> p.pos)
                 .collect(Collectors.toSet());
-        Set<Hex> winningPos = board.getStartFields(3+player.getIndex() * 2);
+        Set<Hex> winningPos = board.getStartFields(3 + player.getIndex() * 2);
+        player.setScore(50-actualTurn + 1000 - getScore(currentPos, player.getIndex()));
         if (currentPos.containsAll(winningPos)) {
             player.deactivate(player.getNicknameToken() + " finished!");
         }
-        
 
         // check end game
-        if (gameManager.getActivePlayers().size() <= 1) {
+        if (gameManager.getActivePlayers().size() == 0) {
             gameManager.endGame();
         }
 
     }
 
+    public int getScore(final Set<Hex> currentPos, int playerId) {
+        // for all winning positions
+        // find closes piece
+        // add distance to score
+        // remove piece
+        Set<Hex> workpos = new HashSet<>(currentPos);
+        int score = 0;
+        for (Hex pos : board.getStartFields(3 + playerId * 2)) {
+            int min = 10000;
+            Hex closest = null;
+            for (Hex cur : workpos) {
+                int d = pos.distance(cur);
+                if (d < min) {
+                    min = d;
+                    closest = cur;
+                }
+            }
+            score += min;
+            workpos.remove(closest);
+        }
+        return score;
+    }
+
     @Override
     public void onEnd() {
         List<Player> winner = new LinkedList<>();
-        long minScore = Integer.MAX_VALUE;
+        long maxScore = 0;
         for (Player player : gameManager.getPlayers()) {
-            final Hex goal = new Hex(-8, 4).rotate(player.getIndex() * 2);
-            long score = board.getAllPieces().stream()
-                    .filter(p -> p.playerID == player.getIndex())
-                    .collect(Collectors.summarizingInt(p -> p.pos.distance(goal))).getSum();
-            player.setScore((int) score);
+            long score = player.getScore();
             gameManager.addToGameSummary(player.getNicknameToken() + " Score: " + score);
 
-            if (score < minScore) {
-                minScore = score;
+            if (score > maxScore) {
+                maxScore = score;
                 winner.clear();
                 winner.add(player);
-            } else if (score == minScore) {
+            } else if (score == maxScore) {
                 winner.add(player);
             }
         }

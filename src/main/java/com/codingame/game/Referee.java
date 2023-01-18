@@ -24,7 +24,7 @@ public class Referee extends AbstractReferee {
     private static final Logger logger = LogManager.getLogger(Referee.class);
 
     /** Side lenght of the starting triangles and the central hexagon */
-    private static int GROUND_SIZE = 4;
+    public static int GROUND_SIZE = 4;
     int actualTurn = 0;
     List<Player> nextPlayer = Collections.emptyList();
 

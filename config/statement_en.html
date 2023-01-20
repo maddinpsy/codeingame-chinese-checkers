@@ -49,7 +49,7 @@ line-height: 18px;">
                             <b>1</b>
                  </div>
         To address the locations in the hexagonal grid cube coordinates are used.
-        Each direction in the grid corrsoponse to one axis.
+        Each direction in the grid corresponds to one axis.
         <ul>
           <li>
             From the bottom to top: q-axis
@@ -70,7 +70,7 @@ line-height: 18px;">
         Each player has ten pieces and starts in one of the six corners of the star. 
         The coordinates in the start corner are positive in the players axis. For player 1's start position, the first coordinate is positive. For player 2 the second and player 3 the third. 
         <br>
-        Player 1 starts in the bottom corner. With pieces on foilliwing coordinates: <br>
+        Player 1 starts in the bottom corner. With pieces on following coordinates: <br>
         <b>( 3, -3, 0 )</b>, <b>( 3, -2, -1 )</b> , <b>( 3, -1, -2 )</b>, <b>( 3, 0, -3 )</b><br>
         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
         <b>( 4, -3, -1 )</b>, <b>( 4, -2, -2 )</b> , <b>( 4, -1, -3 )</b><br>
@@ -82,7 +82,7 @@ line-height: 18px;">
         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
         <b>( 6, -3, -3 )</b><br>
         <br>
-         Player 2 starts in the top right corner. With pieces on foilliwing coordinates: <br>
+         Player 2 starts in the top right corner. With pieces on following coordinates: <br>
         <b>( -3, 3, 0 )</b>, <b>( -2, 3, -1 )</b> , <b>( -1, 3, -2 )</b>, <b>( 0, 3, -3 )</b><br>
         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
         <b>( -3, 4, -1 )</b>, <b>( -2, 4, -2 )</b> , <b>( -1, 4, -3 )</b><br>
@@ -94,7 +94,7 @@ line-height: 18px;">
         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
         <b>( -3, 6, -3 )</b><br>
         <br>
-         Player 3 starts in the top left corner. With pieces on foilliwing coordinates: <br>
+         Player 3 starts in the top left corner. With pieces on following coordinates: <br>
         <b>( 0, -3, 3 )</b>, <b>( -1, -2, 3 )</b> , <b>( -2, -1, 3 )</b>, <b>( 0, -3, 3 )</b><br>
         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
         <b>( -1, -3, 4 )</b>, <b>( -2, -2, 4 )</b> , <b>( -3, -1, 4 )</b><br>
@@ -111,11 +111,11 @@ line-height: 18px;">
         Players take turns moving a single piece:
         <ul>
           <li>A piece can be pushed in any direction to an adjacent empty space.</li>
-          <li>A piece can jump over anoather piece, no matter the color. 
+          <li>A piece can jump over another piece, no matter the color. 
               You can chain consecutive hops in a single move.
           </li>
         </ul>
-        A player may not combine jumping with a push move – a move consists of one or the other.
+        A player may not combine jumping with a push move - a move consists of one or the other.
         There is no capturing, so pieces that are hopped over remain in play. 
         <br><br>
       </div>
@@ -129,7 +129,7 @@ line-height: 18px;">
     </h1>
 
     <div class="statement-examples-text">
-      With the folwwing state given:
+      With the following state given:
 <div style="page-break-inside: avoid;word-break: break-all;word-wrap: break-word;white-space: pre;white-space: pre-wrap;font-family: 'Courier New', monospace;font-size: 18px;
 line-height: 18px;">
                            o
@@ -196,15 +196,15 @@ The output must be <const>-1 -1 2 0 -2 2</const>.
     </h1>
     <!-- Protocol block -->
     <div class="blk">
-      <div class="text">There is no initalistation data. All data is sent in every move.</div>
+      <div class="text">There is no initialization data. All data is sent in every move.</div>
     </div>
 
     <!-- Protocol block -->
     <div class="blk">
       <div class="title">Input</div>
       <div class="text">
-        <p><span class="statement-lineno">Line 1: </span>An integer <var>N</var>, the number of entites. Currently always <const>30</const>.<p>
-        <p><span class="statement-lineno">Next N lines: </span> Four intergers seperated by space <var>Id</var>, <var>q</var>,<var>r</var>,<var>s</var> representing the player number and position of all pieces.<p>
+        <p><span class="statement-lineno">Line 1: </span>An integer <var>N</var>, the number of entities. Currently always <const>30</const>.<p>
+        <p><span class="statement-lineno">Next N lines: </span> Four integers separated by space <var>Id</var>, <var>q</var>,<var>r</var>,<var>s</var> representing the player number and position of all pieces.<p>
       </div>
     </div>
 
@@ -212,7 +212,7 @@ The output must be <const>-1 -1 2 0 -2 2</const>.
     <div class="blk">
       <div class="title">Output</div>
       <div class="text">
-        <span class="statement-lineno">A single line</span> containing the start position and end position of the move seperated by space. 
+        <span class="statement-lineno">A single line</span> containing the start position and end position of the move separated by space. 
         <var>q_start</var> <var>r_start</var> <var>s_start</var> <var>q_end</var> <var>r_end</var> <var>s_end</var>.
         <br>
       </div>
@@ -228,7 +228,7 @@ The output must be <const>-1 -1 2 0 -2 2</const>.
         <var>q</var>+<var>r</var>+<var>s</var> == 0
         <br>
         <br>
-        Response time per turn to output is ≤ <const>150</const> milliseconds.
+        Response time per turn to output is ≤ <const>200</const> milliseconds.
       </div>
     </div>
   </div>

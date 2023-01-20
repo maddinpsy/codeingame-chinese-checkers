@@ -1,2 +1,5 @@
+# v0.1.1
+ - fix typos
+
 # v0.1
- - Inital commit to CodeInGame
+ - Initial commit to CodeInGame

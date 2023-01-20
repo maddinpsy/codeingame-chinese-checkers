@@ -14,7 +14,7 @@ public class Board {
     public void init(int size, int numPlayers) {
         this.size = size;
         this.numPlayers = numPlayers;
-        initPices();
+        initPieces();
     }
 
     public void init(int size, int numPlayers, List<Piece> pieces) {
@@ -23,7 +23,7 @@ public class Board {
         this.pieces = pieces;
     }
 
-    private void initPices() {
+    private void initPieces() {
         pieces = new ArrayList<>((size * (size - 1)) / 2 * numPlayers);
 
         for (int id = 0; id < getNumPlayers(); id++) {

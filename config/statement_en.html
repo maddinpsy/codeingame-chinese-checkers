@@ -7,10 +7,7 @@
       <span>The Goal</span>
     </h1>
     <div class="statement-goal-content">
-      The aim of this game is to win.
-      <br>
-      <br>
-      For this question, you will be asked to output a single line as a solution.
+      Chinese checkers is a turn-based board game. The objective is to be first to race all pieces across the board. 
     </div>
   </div>
   <!-- RULES -->
@@ -20,34 +17,108 @@
       <span>Rules</span>
     </h1>
     <div>
-      <div class="statement-rules-content">Your program receives characters.<br>
-        Your actions have an effect.<br>
+      <div class="statement-rules-content">
+        The game is played on a hexagonal star board with three players.
         <br>
-        The game zone works as follows:
+        <div style="page-break-inside: avoid;word-break: break-all;word-wrap: break-word;white-space: pre;white-space: pre-wrap;font-family: 'Courier New', monospace;font-size: 18px;
+line-height: 18px;">
+                            o
+                           / \
+                          o - o 
+                         / \ / \
+                        o - o - o
+                       / \ / \ / \
+          <b>3</b> - <b>3</b> - <b>3</b> - <b>3</b> - o - o - <b>2</b> - <b>2</b> - <b>2</b> - <b>2</b>
+           \ / \ / \ / \ / \ / \ / \ / \ / \ /
+            <b>3</b> - <b>3</b> - <b>3</b> - o - o - o - <b>2</b> - <b>2</b> - <b>2</b>
+             \ / \ / \ / \ / \ / \ / \ / \ / 
+              <b>3</b> - <b>3</b> - o - o - o - o - <b>2</b> - <b>2</b>
+               \ / \ / \ / \ / \ / \ / \ /
+                <b>3</b> - o - o - <b>C</b> - o - o - <b>2</b>
+               / \ / \ / \ / \ / \ / \ / \
+              o - o - o - o - o - o - o - o
+             / \ / \ / \ / \ / \ / \ / \ / \
+            o - o - o - o - o - o - o - o - o
+           / \ / \ / \ / \ / \ / \ / \ / \ / \
+          o - o - o - <b>1</b> - <b>1</b> - <b>1</b> - <b>1</b> - o - o - o 
+                       \ / \ / \ /
+                        <b>1</b> - <b>1</b> - <b>1</b>
+                         \ / \ /
+                          <b>1</b> - <b>1</b> 
+                           \ /
+                            <b>1</b>
+                 </div>
+        To address the locations in the hexagonal grid cube coordinates are used.
+        Each direction in the grid corrsoponse to one axis.
         <ul>
-          <li>There are coordinates.</li>
+          <li>
+            From the bottom to top: q-axis
+          </li>
+          <li>
+            From bottom left to the top right: r-axis
+          </li>
+          <li>
+            From top left to the bottom right: s-axis.
+          </li>
         </ul>
+        Resulting in the coordinates <b>( q, r, s )</b>.
+        The mapping from 3D coordinates to the 2D plane leads to the constraint: 
+        q + r + s = 0. 
         <br>
-        The units work as follows:
+        <br>
+        The central position <b>C</b> is <b>( 0, 0, 0 ). </b>
+        Each player has ten pieces and starts in one of the six corners of the star. 
+        The coordinates in the start corner are positive in the players axis. For player 1's start position, the first coordinate is positive. For player 2 the second and player 3 the third. 
+        <br>
+        Player 1 starts in the bottom corner. With pieces on foilliwing coordinates: <br>
+        <b>( 3, -3, 0 )</b>, <b>( 3, -2, -1 )</b> , <b>( 3, -1, -2 )</b>, <b>( 3, 0, -3 )</b><br>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        <b>( 4, -3, -1 )</b>, <b>( 4, -2, -2 )</b> , <b>( 4, -1, -3 )</b><br>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        <b>( 5, -3, -2 )</b>, <b>( 5, -2, -3 )</b><br>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        <b>( 6, -3, -3 )</b><br>
+        <br>
+         Player 2 starts in the top right corner. With pieces on foilliwing coordinates: <br>
+        <b>( -3, 3, 0 )</b>, <b>( -2, 3, -1 )</b> , <b>( -1, 3, -2 )</b>, <b>( 0, 3, -3 )</b><br>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        <b>( -3, 4, -1 )</b>, <b>( -2, 4, -2 )</b> , <b>( -1, 4, -3 )</b><br>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        <b>( -3, 5, -2 )</b>, <b>( -2, 5, -3 )</b><br>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        <b>( -3, 6, -3 )</b><br>
+        <br>
+         Player 3 starts in the top left corner. With pieces on foilliwing coordinates: <br>
+        <b>( 0, -3, 3 )</b>, <b>( -1, -2, 3 )</b> , <b>( -2, -1, 3 )</b>, <b>( 0, -3, 3 )</b><br>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        <b>( -1, -3, 4 )</b>, <b>( -2, -2, 4 )</b> , <b>( -3, -1, 4 )</b><br>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        <b>( -3, -2, 5 )</b>, <b>( -2, -3, 5 )</b><br>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        <b>( -3, -3, 6 )</b><br>
+        <br>
+        <br>
+        They try to race all pieces into the opposite corner of the star.  
+        Players take turns moving a single piece:
         <ul>
-          <li>They move around.</li>
+          <li>A piece can be pushed in any direction to an adjacent empty space.</li>
+          <li>A piece can jump over anoather piece, no matter the color. 
+              You can chain consecutive hops in a single move.
+          </li>
         </ul>
-        You <strong>lose</strong> if:
-        <ul>
-          <li>You mess up.</li>
-          <li>You do not supply a valid sequence of actions.</li>
-        </ul>
+        A player may not combine jumping with a push move – a move consists of one or the other.
+        There is no capturing, so pieces that are hopped over remain in play. 
+        <br><br>
       </div>
-    </div>
-  </div>
-  <!-- EXPERT RULES -->
-  <div class="statement-section statement-expertrules">
-    <h1>
-      <span class="icon icon-expertrules">&nbsp;</span>
-      <span>Expert Rules</span>
-    </h1>
-    <div class="statement-expert-rules-content">
-      If you're going to run local simulations, you'll need to know this!
     </div>
   </div>
   <!-- EXAMPLES -->
@@ -58,29 +129,65 @@
     </h1>
 
     <div class="statement-examples-text">
-      A basic situation, an instruction, a result.
-    </div>
+      With the folwwing state given:
+<div style="page-break-inside: avoid;word-break: break-all;word-wrap: break-word;white-space: pre;white-space: pre-wrap;font-family: 'Courier New', monospace;font-size: 18px;
+line-height: 18px;">
+                           o
+                          / \
+                         o - o 
+                        / \ / \
+                       o - o - o
+                      / \ / \ / \
+         <b>3</b> - <b>3</b> - <b>3</b> - <b>3</b> - o - o - <b>2</b> - <b>2</b> - <b>2</b> - <b>2</b>
+          \ / \ / \ / \ / \ / \ / \ / \ / \ /
+           <b>3</b> - <b>3</b> - o - o - o - o - o - <b>2</b> - <b>2</b>
+            \ / \ / \ / \ / \ / \ / \ / \ / 
+             <b>3</b> - <b>3</b> - <span style="color:#ff8f16"><b>3</b></span> - o - o <span style="color:#22a1e4"><b>-</b></span> <b>2</b> <span style="color:#22a1e4"><b>-</b></span> <span style="color:#22a1e4"><b>2</b></span> - <b>2</b>
+              \ / \ <span style="color:#ff8f16"><b>/</b></span> \ / <span style="color:#ff1d5c"><b>\</b></span> <span style="color:#22a1e4"><b>/</b></span> \ / \ / \ /
+               <b>3</b> - o - o - <b>1</b> - o - o - <b>2</b>
+              / \ / \ / \ <span style="color:#22a1e4"><b>/</b></span> <span style="color:#ff1d5c"><b>\</b></span> / \ / \ / \
+             o - o - o - o - o - o - o - o
+            / \ / \ / \ / \ <span style="color:#ff1d5c"><b>/</b></span> \ / \ / \ / \
+           o - o - o - o - <b>1</b> - o - o - o - o
+          / \ / \ / \ / \ <span style="color:#ff1d5c"><b>/</b></span> \ / \ / \ / \ / \
+         o - o - o - <b>1</b> - <span style="color:#ff1d5c"><b>1</b></span> - o - <b>1</b> - o - o - o 
+                      \ / \ / \ /
+                       <b>1</b> - <b>1</b> - o
+                        \ / \ /
+                         <b>1</b> - <b>1</b> 
+                          \ /
+                           <b>1</b> 
+</div>
 
-  </div>
-  <!-- WARNING -->
-  <div class="statement-section statement-warning">
-    <h1>
-      <span class="icon icon-warning">&nbsp;</span>
-      <span>Note</span>
-    </h1>
-    <div class="statement-warning-content">
-      <b>Don’t forget to run the tests by launching them from the “Test cases” window</b>. You can submit at any time
-      to recieve a score against the training validators. <b>You can submit as many times as you like</b>. Your most
-      recent submission will be used for the final ranking.<br>
-      <br>
-      <strong>Warning:</strong> the validation tests used to compute the final score are not the same as the ones used
-      during the event.
-      Harcoded solutions will not score highly.<br>
-      <br>
-      Don't hesitate to change the viewer's options to help debug your code (<img style="opacity:.8;background:#20252a;"
-        height="18" src="https://www.codingame.com/servlet/fileservlet?id=3463235186409" width="18">).
+<br>
+<b>Player 1</b> is moving the red 1 at (3, -2, -1). 
+<br>
+Jumping along the red path. 
+<br>
+Ending on (-1, 0, 1). 
+<br>
+The output must be 3 <const>-2 -1 -1 0 1</const>.
+<br>
+<br>
+<b>Player 2</b> is moving the blue 2 at (-1, 3, -2).
+<br>
+Jumping along the blue path.
+<br>
+Ending on (1, -1, 0).
+<br>
+The output must be <const>-1 3 -2 1 -1 0</const>.
+<br>
+<br>
+<b>Player 3</b> is moving the yellow 3 at (-1, -1, 2).
+<br>
+Only pushing one field.
+<br>
+Ending on (0, -2, 2).
+<br>
+The output must be <const>-1 -1 2 0 -2 2</const>.
     </div>
   </div>
+
   <!-- PROTOCOL -->
   <div class="statement-section statement-protocol">
     <h1>
@@ -89,15 +196,15 @@
     </h1>
     <!-- Protocol block -->
     <div class="blk">
-      <div class="text">The program must first read the initialization data from standard input. Then, provide to the
-        standard output one line with ...</div>
+      <div class="text">There is no initalistation data. All data is sent in every move.</div>
     </div>
 
     <!-- Protocol block -->
     <div class="blk">
       <div class="title">Input</div>
       <div class="text">
-        <p><span class="statement-lineno">Line 1: </span>one string <var>...</var>, the ...</p>
+        <p><span class="statement-lineno">Line 1: </span>An integer <var>N</var>, the number of entites. Currently always <const>30</const>.<p>
+        <p><span class="statement-lineno">Next N lines: </span> Four intergers seperated by space <var>Id</var>, <var>q</var>,<var>r</var>,<var>s</var> representing the player number and position of all pieces.<p>
       </div>
     </div>
 
@@ -105,7 +212,8 @@
     <div class="blk">
       <div class="title">Output</div>
       <div class="text">
-        <span class="statement-lineno">A single line</span> containing ...
+        <span class="statement-lineno">A single line</span> containing the start position and end position of the move seperated by space. 
+        <var>q_start</var> <var>r_start</var> <var>s_start</var> <var>q_end</var> <var>r_end</var> <var>s_end</var>.
         <br>
       </div>
     </div>
@@ -113,19 +221,14 @@
     <!-- Protocol block -->
     <div class="blk">
       <div class="title">Constraints</div>
-      <div class="text"><var>...</var> contains between 1 and 500 characters.<br>
-        <br>Allotted response time to output
-        is ≤ <const>2</const> seconds.</div>
-    </div>
-  </div>
-  <!-- STORY -->
-  <div class="statement-story-background">
-    <div class="statement-story-cover" style="background-size: cover; background-image: url(https://www.codingame.com/servlet/fileservlet?id=2210505809934)">
-      <div class="statement-story">
-        <h1>Title</h1>
-        <div class="story-text">Story
-          <br>
-          Totally optional</div>
+      <div class="text">
+        <var>N</var> == 30<br>
+        1 &le; <var>id</var> &le; 3<br>
+        -6 &le; <var>q</var>,<var>r</var>,<var>s</var> &le; 6<br>
+        <var>q</var>+<var>r</var>+<var>s</var> == 0
+        <br>
+        <br>
+        Response time per turn to output is ≤ <const>150</const> milliseconds.
       </div>
     </div>
   </div>

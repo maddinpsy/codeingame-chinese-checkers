@@ -1,3 +1,4 @@
+gameloop
 read n:int
-loopline n id:int q:int r:int s:int
+loop n read id:int q:int r:int s:int
 write old_q old_r old_s new_q new_r new_s

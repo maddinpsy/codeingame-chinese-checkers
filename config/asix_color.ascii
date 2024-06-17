@@ -1,0 +1,34 @@
+<div style="page-break-inside: avoid;word-break: break-all;word-wrap: break-word;white-space: pre;white-space: pre-wrap;font-family: 'Courier New', monospace;font-size: 18px;
+line-height: 18px;">
+   ▲ 
+   │
+ 6 │ . . . . . . . . . . o           
+   │                    / \           
+ 5 │ . . . . . . . . . o - o            
+   │                  / \ / \           
+ 4 │ . . . . . . . . o - o - o           
+   │                / \ / \ / \           
+ 3 │ . <span style="color:#ff8f16"><b>3</b></span> - <span style="color:#ff8f16"><b>3</b></span> - <span style="color:#ff8f16"><b>3</b></span> - <span style="color:#ff8f16"><b>3</b></span> - o - o - <span style="color:#22a1e4"><b>2</b></span> - <span style="color:#22a1e4"><b>2</b></span> - <span style="color:#22a1e4"><b>2</b></span> - <span style="color:#22a1e4"><b>2</b></span>           
+   │    \ / \ / \ / \ / \ / \ / \ / \ / \ / .         
+ 2 │ . . <span style="color:#ff8f16"><b>3</b></span> - <span style="color:#ff8f16"><b>3</b></span> - <span style="color:#ff8f16"><b>3</b></span> - o - o - o - <span style="color:#22a1e4"><b>2</b></span> - <span style="color:#22a1e4"><b>2</b></span> - <span style="color:#22a1e4"><b>2</b></span>   .       
+   │      \ / \ / \ / \ / \ / \ / \ / \ / .   .       
+ 1 │ . . . <span style="color:#ff8f16"><b>3</b></span> - <span style="color:#ff8f16"><b>3</b></span> - o - o - o - o - <span style="color:#22a1e4"><b>2</b></span> - <span style="color:#22a1e4"><b>2</b></span>   .   .    
+   │        \ / \ / \ / \ / \ / \ / \ / .   .   .
+ 0 │ . . . . <span style="color:#ff8f16"><b>3</b></span> - o - o - C - o - o - <span style="color:#22a1e4"><b>2</b></span>   .   .   .    
+   │        / \ / \ / \ / \ / \ / \ / \   .   .   .   
+-1 │ . . . o - o - o - o - o - o - o - o   .   .   .
+   │      / \ / \ / \ / \ / \ / \ / \ / \   .   .   .
+-2 │ . . o - o - o - o - o - o - o - o - o   .   .   .
+   │    / \ / \ / \ / \ / \ / \ / \ / \ / \   .   .   .
+-3 │ . o - o - o - <span style="color:#ff1d5c"><b>1</b></span> - <span style="color:#ff1d5c"><b>1</b></span> - <span style="color:#ff1d5c"><b>1</b></span> - <span style="color:#ff1d5c"><b>1</b></span> - o - o - o   .   .   .
+   │    .   .   .   \ / \ / \ / .   .   .   .   .   .   .
+-4 │ . . . . . . . . <span style="color:#ff1d5c"><b>1</b></span> - <span style="color:#ff1d5c"><b>1</b></span> - <span style="color:#ff1d5c"><b>1</b></span>   .   .   .   .   .   .   . 
+   │      .   .   .   \ / \ / .   .   .   .   .   .   .   .
+-5 │ . . . . . . . . . <span style="color:#ff1d5c"><b>1</b></span> - <span style="color:#ff1d5c"><b>1</b></span>   .   .   .   .   .   .   .   .
+   │        .   .   .   \ / .   .   .   .   .   .   .   .   .
+-6 │ . . . . . . . . . . <span style="color:#ff1d5c"><b>1</b></span>   .   .   .   .   .   .   .   .   .
+   │          .   .   .   .   .   .   .   .   .   .   .   .   .
+   └───────────────────────────────────────────────────────────────► 
+              -6  -5  -4  -3  -2  -1   0   1   2   3   4   5   6   
+
+</div>
